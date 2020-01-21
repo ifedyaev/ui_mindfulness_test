@@ -2,7 +2,14 @@
 #include "ui_ui_mindfulness.h"
 #include <QRegExpValidator>
 #include <QMessageBox>
-#include <QMap>
+#include <QPainter>
+#include <QPolygon>
+#include <QKeyEvent>
+#include <QColor>
+
+#include <QDebug>
+
+#include <random>
 
 static constexpr int32_t C_IDX_REGI = 0;
 static constexpr int32_t C_IDX_TIME = 1;
@@ -27,7 +34,7 @@ static const QStringList C_LIST_WEAK = {
 
 static const QStringList C_LIST_TD = {
     "Утро",
-    "Обед",
+    "День",
     "Вечер"
 };
 
@@ -47,12 +54,76 @@ UiMindfulness::UiMindfulness(QWidget *parent)
     setup_registation();
     /* time */
     setup_time();
-
+    /* test frame */
+    repaint();
 }
 
 UiMindfulness::~UiMindfulness()
 {
     delete ui;
+}
+
+void UiMindfulness::paintEvent(QPaintEvent *ev)
+{
+    if(ui->m_main_tab_widget->currentIndex() != C_IDX_TEST){
+        return;
+    }
+
+    std::random_device rd;
+    std::mt19937 e2(rd());
+    std::uniform_int_distribution<int> dist(0,1);
+
+    const int32_t idx_rand = dist(e2);
+
+    if(idx_rand == 0){
+        m_color_save = Qt::red;
+    }
+    else{
+        m_color_save = Qt::blue;
+    }
+
+    QPainter painter(this);
+    constexpr int32_t line_width = 1;
+
+    painter.setPen(QPen(Qt::black, line_width, Qt::SolidLine, Qt::FlatCap));
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setBrush(QBrush(m_color_save, Qt::SolidPattern));
+
+    /* input frame */
+    const int32_t x_lhs  = ui->m_frame_test->geometry().x();
+    const int32_t y_lhs  = ui->m_frame_test->geometry().y();
+    const int32_t width  = ui->m_frame_test->width();
+    const int32_t height = ui->m_frame_test->height();
+    qDebug() << "hello!";
+
+    const int32_t min_length = qMin<int32_t>(width,height);
+
+    const int32_t half_square_width = static_cast<int32_t>(min_length*0.8/2);
+
+    /* copmpute x|y mid  */
+
+    const int32_t x_mid = x_lhs + width/2;
+    const int32_t y_mid = y_lhs + height/2;
+
+    const int32_t x_sq_left  = x_mid - half_square_width;
+    const int32_t x_sq_right = x_mid + half_square_width;
+
+    const int32_t y_sq_top = y_mid - half_square_width;
+    const int32_t y_sq_bot = y_mid + half_square_width;
+
+    const QPolygon poligon{ { QPoint(x_sq_left,y_sq_top), QPoint(x_sq_right,y_sq_top), QPoint(x_sq_right,y_sq_bot), QPoint(x_sq_left,y_sq_bot) } };
+
+    painter.drawPolygon(poligon);
+    return;
+}
+
+void UiMindfulness::keyPressEvent(QKeyEvent *ev)
+{
+    const int32_t key = ev->key();
+    if( key == Qt::Key_Space or key == Qt::Key_Up ){
+        repaint();
+    }
+    return;
 }
 
 
@@ -75,15 +146,15 @@ void UiMindfulness::on_push_button_reg_next_clicked()
         return;
     }
     /* save data */
-    m_save_data.first_name = ui->m_line_edit_fn->text();
+    m_save_data.first_name  = ui->m_line_edit_fn->text();
     m_save_data.second_name = ui->m_line_edit_sn->text();
-    m_save_data.third_name = ui->m_line_edit_tn->text();
-    m_save_data.year = ui->m_spin_box_years->value();
+    m_save_data.third_name  = ui->m_line_edit_tn->text();
+    m_save_data.year        = ui->m_spin_box_years->value();
 
     /* unmute time test and mute regisgtation */
     constexpr bool is_enable = true;
-    ui->main_tab_widget->setTabEnabled(C_IDX_TIME,is_enable);
-    ui->main_tab_widget->setTabEnabled(C_IDX_REGI,not is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_TIME,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_REGI,not is_enable);
 
     return;
 }
@@ -91,7 +162,7 @@ void UiMindfulness::on_push_button_reg_next_clicked()
 void UiMindfulness::setup_registation()
 {
     /* f|s|t name */
-    QRegExp rx_rus("[А-Я][а-я]+");
+    const QRegExp rx_rus("[А-Я][а-я]+");
     ui->m_line_edit_fn->setValidator(new QRegExpValidator(rx_rus));
     ui->m_line_edit_sn->setValidator(new QRegExpValidator(rx_rus));
     ui->m_line_edit_tn->setValidator(new QRegExpValidator(rx_rus));
@@ -99,10 +170,10 @@ void UiMindfulness::setup_registation()
 
     /* mute tab */
     constexpr bool is_enable = false;
-    ui->main_tab_widget->setTabEnabled(C_IDX_TIME,is_enable);
-    ui->main_tab_widget->setTabEnabled(C_IDX_INFO,is_enable);
-    ui->main_tab_widget->setTabEnabled(C_IDX_TEST,is_enable);
-    ui->main_tab_widget->setTabEnabled(C_IDX_RESU,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_TIME,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_TEST,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_RESU,is_enable);
 }
 
 void UiMindfulness::setup_time()
@@ -152,8 +223,8 @@ void UiMindfulness::on_push_button_time_next_clicked()
 
     /* unmute information test and mute time test */
     constexpr bool is_enable = true;
-    ui->main_tab_widget->setTabEnabled(C_IDX_INFO,is_enable);
-    ui->main_tab_widget->setTabEnabled(C_IDX_TIME,not is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_TIME,not is_enable);
 
     return;
 }
@@ -162,7 +233,7 @@ void UiMindfulness::on_m_push_button_info_clicked()
 {
     /* unmute Test and mute information test */
     constexpr bool is_enable = true;
-    ui->main_tab_widget->setTabEnabled(C_IDX_TEST,is_enable);
-    ui->main_tab_widget->setTabEnabled(C_IDX_INFO,not is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_TEST,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,not is_enable);
     return;
 }

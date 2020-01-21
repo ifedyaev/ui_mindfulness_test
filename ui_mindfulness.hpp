@@ -17,6 +17,10 @@ public:
     UiMindfulness(QWidget *parent = nullptr);
     ~UiMindfulness();
 
+    void paintEvent(QPaintEvent* ev);
+
+    void keyPressEvent(QKeyEvent* ev);
+
 private slots:
     void on_push_button_reg_next_clicked();
 
@@ -28,6 +32,7 @@ private:
     Ui::UiMindfulness *ui;
 
     libif::SaveDataUser m_save_data;
+    QColor m_color_save;
 
 private:
     /**
