@@ -6,19 +6,28 @@
 namespace libif {
 class SaveDataUser{
 public:
-    QString first_name;     /* Фамилия */
-    QString second_name;    /* Имя */
-    QString third_name;     /* Отчество */
-    int32_t year;           /* Лет */
+    QString first_name;         /* Фамилия */
+    QString second_name;        /* Имя */
+    QString third_name;         /* Отчество */
+    int32_t year{0};            /* Лет */
 
+    QString group;
 
-    int32_t idx_time_day;   /* индекс время суток */
-    QDate date;             /* дата */
-    int32_t idx_weak;       /* индекс недели */
-    int32_t idx_time_test;  /* индекс времени теста */
+    QString time_day;           /* время суток */
+    QDate date;                 /* дата */
+    QString day_weak;        /* день недели */
+    int32_t idx_time_test{0};   /* индекс времени теста */
 
     int32_t count_test{0};
-};
-}
+
+    /* correct answer */
+    int32_t summ_correct_time{0};
+    int32_t n_correct{0};
+
+    inline void increment_correct_answer() noexcept{ ++n_correct; return; }
+
+    inline void increment_test() noexcept{ ++count_test; return; }
+};/* end class SaveDataUser */
+}/* end namespace libif */
 
 #endif // SAVE_DATA_HPP

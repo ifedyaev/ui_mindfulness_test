@@ -24,7 +24,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="tab_registration">
        <attribute name="title">
@@ -397,11 +397,11 @@
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;Инфомационное окно для прохождения теста на утомляемость&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;Если всплявает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#cc0000;&quot;&gt;Красный Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;вверх&amp;quot; ( )&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;&lt;br /&gt;Если всплывает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#204a87;&quot;&gt;Синий Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;пробел&amp;quot; ()&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;Если всплявает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#cc0000;&quot;&gt;Красный Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;Z&amp;quot; ( )&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;&lt;br /&gt;Если всплывает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#204a87;&quot;&gt;Синий Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;M&amp;quot; ()&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -481,12 +481,44 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
+        <item row="1" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="m_label_result_test">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_11">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QTimeEdit" name="m_time_edit_test"/>
+          </item>
+         </layout>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_result">
        <attribute name="title">
         <string>Результат</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_8">
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="m_table_widget_result"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -498,7 +530,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>695</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

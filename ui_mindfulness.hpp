@@ -36,6 +36,10 @@ private:
 
     QGraphicsScene* m_scren{nullptr};
 
+    QTime m_time_test;
+    int32_t m_test_ms{0};
+
+    QTime m_one_test;
 private:
     /**
      * @brief setup_registation init registration tab
@@ -48,6 +52,8 @@ private:
 
     void setup_test();
 
+    void setup_result();
+
     /**
      * @brief err_message set error message from user
      * @param err_str message error
@@ -55,5 +61,9 @@ private:
     void err_message(const QString& err_str) const;
 
     void set_new_square();
+
+    void end_test();
+
+    void update_lable(const int32_t number);
 };
 #endif // UIMINDFULNESS_HPP

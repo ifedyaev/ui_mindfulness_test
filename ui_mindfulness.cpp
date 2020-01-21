@@ -46,6 +46,10 @@ static const QStringList C_LIST_TT = {
     "3 мин."
 };
 
+static const int32_t C_MAX_TEST = 3;
+
+static const QString C_MAX_TEST_STR = QString().sprintf("%03d", C_MAX_TEST);
+
 UiMindfulness::UiMindfulness(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::UiMindfulness)
@@ -58,6 +62,8 @@ UiMindfulness::UiMindfulness(QWidget *parent)
     setup_time();
     /* test frame */
     setup_test();
+    /* result */
+    setup_result();
 }
 
 UiMindfulness::~UiMindfulness()
@@ -73,7 +79,18 @@ void UiMindfulness::keyPressEvent(QKeyEvent *ev)
     }
 
     const int32_t key = ev->key();
-    if( key == Qt::Key_Space or key == Qt::Key_Up ){
+    if( key == Qt::Key_Z ){
+        if(m_color_save == QColor(Qt::red)){
+            m_save_data.increment_correct_answer();
+            m_save_data.summ_correct_time += m_one_test.restart();
+        }
+        set_new_square();
+    }
+    if(key == Qt::Key_M){
+        if(m_color_save == QColor(Qt::blue)){
+            m_save_data.increment_correct_answer();
+            m_save_data.summ_correct_time += m_one_test.restart();
+        }
         set_new_square();
     }
     return;
@@ -102,6 +119,7 @@ void UiMindfulness::on_push_button_reg_next_clicked()
     m_save_data.second_name = ui->m_line_edit_sn->text();
     m_save_data.third_name  = ui->m_line_edit_tn->text();
     m_save_data.year        = ui->m_spin_box_years->value();
+    m_save_data.group       = ui->m_line_edit_group->text();
 
     /* unmute time test and mute regisgtation */
     constexpr bool is_enable = true;
@@ -162,7 +180,56 @@ void UiMindfulness::setup_test()
 {
     m_scren = new QGraphicsScene(this);
     ui->graphicsView->setScene(m_scren);
+    return;
+}
 
+static const QStringList C_LIST_HDR = {
+    "Наименование",
+    "Значение"
+};
+
+static const QStringList C_LIST_ROW = {
+    "Фамилия",
+    "Имя",
+    "Отчество",
+    "Возраст",
+    "Группа",
+    "Время Суток",
+    "Дата",
+    "День Недели",
+    "Время затраченное на тест ( ms )",
+    "Количество правельных ответов",
+    "Количество не правельных ответов",
+    "Среднее время потраченное на Правельный ответ ( ms )"
+};
+
+void UiMindfulness::setup_result()
+{
+    QTableWidget& tw_res = *ui->m_table_widget_result;
+    int32_t i;
+
+    const int32_t n_col = static_cast<int32_t>(C_LIST_HDR.size());
+    /* set header */
+    tw_res.setColumnCount(n_col);
+    tw_res.setHorizontalHeaderLabels(C_LIST_HDR);
+    for(i = 0; i < n_col; ++i){
+        tw_res.horizontalHeaderItem(i)->setTextAlignment(Qt::AlignCenter);
+    }
+    tw_res.horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    tw_res.horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
+    const int32_t n_row = static_cast<int32_t>(C_LIST_ROW.size());
+    tw_res.setRowCount(n_row);
+    for(i = 0; i < n_row; ++i){
+        /* first */
+        QTableWidgetItem* item = new QTableWidgetItem(C_LIST_ROW[i]);
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        tw_res.setItem(i,0,item);
+        /* second */
+        item = new QTableWidgetItem("");
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        tw_res.setItem(i,1,item);
+    }
     return;
 }
 
@@ -222,9 +289,6 @@ void UiMindfulness::set_new_square()
 
     const int32_t n_items = ui->graphicsView->items().size();
 
-    qDebug() << "";
-    qDebug() << "Sise = " << ui->graphicsView->items().size();
-
     if(n_items == 0){
         QGraphicsRectItem* sq_item = m_scren->addRect(x_sq_left,y_sq_top,sq_width,sq_width,c_pen,c_brush);
     }
@@ -235,19 +299,63 @@ void UiMindfulness::set_new_square()
         sq_item->setPen(c_pen);
         sq_item->setBrush(c_brush);
     }
-    ++m_save_data.count_test;
-    qDebug() << "Sise = " << ui->graphicsView->items().size();
-    qDebug() << "count = " << m_save_data.count_test;
-    qDebug() << "";
 
+    m_one_test.restart();
+
+    if(m_save_data.count_test == C_MAX_TEST){
+        end_test();
+        return;
+    }
+    m_save_data.increment_test();
+    update_lable(m_save_data.count_test);
+
+    return;
+}
+
+void UiMindfulness::end_test()
+{
+    /* unmute information test and mute time test */
+    constexpr bool is_enable = true;
+    ui->statusbar->showMessage("");
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_RESU,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(C_IDX_TEST,not is_enable);
+    m_test_ms = m_time_test.elapsed();
+    /* set data */
+    const int32_t col_answer = 1;
+
+    /* set name */
+    QTableWidget& tw_res = *ui->m_table_widget_result;
+
+    tw_res.item(0,col_answer)->setText(m_save_data.first_name);
+    tw_res.item(1,col_answer)->setText(m_save_data.second_name);
+    tw_res.item(2,col_answer)->setText(m_save_data.third_name);
+    tw_res.item(3,col_answer)->setText(QString::number(m_save_data.year));
+    tw_res.item(4,col_answer)->setText(m_save_data.group);
+    tw_res.item(5,col_answer)->setText(m_save_data.time_day);
+    tw_res.item(6,col_answer)->setText(m_save_data.date.toString());
+    tw_res.item(7,col_answer)->setText(m_save_data.day_weak);
+
+    tw_res.item(8,col_answer)->setText(QString::number(m_test_ms));
+    tw_res.item(9,col_answer)->setText(QString::number(m_save_data.n_correct));
+    tw_res.item(10,col_answer)->setText(QString::number(m_save_data.count_test - m_save_data.n_correct ));
+    tw_res.item(11,col_answer)->setText(QString::number( m_save_data.summ_correct_time/static_cast<float>(m_save_data.n_correct) ));
+
+    return;
+}
+
+void UiMindfulness::update_lable(const int32_t number)
+{
+    QString cur_text;
+    cur_text.sprintf("%03d", number);
+    ui->m_label_result_test->setText(QString("%1 из %2").arg(cur_text,C_MAX_TEST_STR));
     return;
 }
 
 void UiMindfulness::on_push_button_time_next_clicked()
 {
-    m_save_data.idx_time_day = ui->m_combo_box_time_day->currentIndex();
-    m_save_data.date = ui->m_date_edit_time->date();
-    m_save_data.idx_weak = ui->m_combo_box_weak_day->currentIndex();
+    m_save_data.time_day      = ui->m_combo_box_time_day->currentText();
+    m_save_data.date          = ui->m_date_edit_time->date();
+    m_save_data.day_weak      = ui->m_combo_box_weak_day->currentText();
     m_save_data.idx_time_test = ui->m_combo_box_time_test->currentIndex();
 
     /* unmute information test and mute time test */
@@ -266,5 +374,6 @@ void UiMindfulness::on_m_push_button_info_clicked()
     ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,not is_enable);
     /* set square */
     set_new_square();
+    m_time_test.start();
     return;
 }
