@@ -7,6 +7,7 @@
 #include <QKeyEvent>
 #include <QColor>
 #include <QGraphicsItem>
+#include <QSizePolicy>
 
 #include <QDebug>
 
@@ -77,7 +78,6 @@ void UiMindfulness::keyPressEvent(QKeyEvent *ev)
     }
     return;
 }
-
 
 void UiMindfulness::on_push_button_reg_next_clicked()
 {
@@ -162,9 +162,6 @@ void UiMindfulness::setup_test()
 {
     m_scren = new QGraphicsScene(this);
     ui->graphicsView->setScene(m_scren);
-    ui->graphicsView->setRenderHint(QPainter::Antialiasing);    // Настраиваем рендер
-    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Отключим скроллбар по горизонтали
-    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // Отключим скроллбар по вертикали
 
     return;
 }
@@ -187,17 +184,23 @@ void UiMindfulness::set_new_square()
 
     if(idx_rand == 0){
         m_color_save = Qt::red;
+        ui->statusbar->showMessage("Красный");
     }
     else{
         m_color_save = Qt::blue;
+        ui->statusbar->showMessage("Голубой");
     }
 
     /* input frame */
-    const int32_t x_lhs  = ui->graphicsView->geometry().x();
-    const int32_t y_lhs  = ui->graphicsView->geometry().y();
+    const QPoint p_lt = ui->graphicsView->geometry().topLeft();
+    const QPoint p_real = ui->graphicsView->mapFromScene( p_lt );
+    qDebug() << p_lt ;
+    qDebug() << p_real ;
+
+    const int32_t x_lhs  = qAbs(p_real.x());
+    const int32_t y_lhs  = qAbs(p_real.y());
     const int32_t width  = ui->graphicsView->width();
     const int32_t height = ui->graphicsView->height();
-
 
     const int32_t min_length = qMin<int32_t>(width,height);
 
@@ -209,9 +212,8 @@ void UiMindfulness::set_new_square()
     const int32_t x_mid = x_lhs + width/2;
     const int32_t y_mid = y_lhs + height/2;
 
-    const int32_t x_sq_left  = x_mid - half_square_width;
-    const int32_t y_sq_top = y_mid - half_square_width;
-
+    const int32_t x_sq_left = x_mid - half_square_width;
+    const int32_t y_sq_top  = y_mid - half_square_width;
 
     constexpr int32_t line_width = 1;
 
@@ -220,8 +222,11 @@ void UiMindfulness::set_new_square()
 
     const int32_t n_items = ui->graphicsView->items().size();
 
+    qDebug() << "";
+    qDebug() << "Sise = " << ui->graphicsView->items().size();
+
     if(n_items == 0){
-        m_scren->addRect(x_sq_left,y_sq_top,sq_width,sq_width,c_pen,c_brush);
+        QGraphicsRectItem* sq_item = m_scren->addRect(x_sq_left,y_sq_top,sq_width,sq_width,c_pen,c_brush);
     }
     else{
         QGraphicsItem* item = ui->graphicsView->items()[0];
@@ -230,7 +235,10 @@ void UiMindfulness::set_new_square()
         sq_item->setPen(c_pen);
         sq_item->setBrush(c_brush);
     }
+    ++m_save_data.count_test;
     qDebug() << "Sise = " << ui->graphicsView->items().size();
+    qDebug() << "count = " << m_save_data.count_test;
+    qDebug() << "";
 
     return;
 }

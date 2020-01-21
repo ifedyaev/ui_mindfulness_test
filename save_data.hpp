@@ -16,6 +16,8 @@ public:
     QDate date;             /* дата */
     int32_t idx_weak;       /* индекс недели */
     int32_t idx_time_test;  /* индекс времени теста */
+
+    int32_t count_test{0};
 };
 }
 
