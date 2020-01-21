@@ -2,6 +2,7 @@
 #define UIMINDFULNESS_HPP
 
 #include <QMainWindow>
+#include <QGraphicsScene>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class UiMindfulness; }
@@ -17,8 +18,6 @@ public:
     UiMindfulness(QWidget *parent = nullptr);
     ~UiMindfulness();
 
-    void paintEvent(QPaintEvent* ev);
-
     void keyPressEvent(QKeyEvent* ev);
 
 private slots:
@@ -32,7 +31,10 @@ private:
     Ui::UiMindfulness *ui;
 
     libif::SaveDataUser m_save_data;
+
     QColor m_color_save;
+
+    QGraphicsScene* m_scren{nullptr};
 
 private:
     /**
@@ -43,10 +45,15 @@ private:
      * @brief setup_time init time test
      */
     void setup_time();
+
+    void setup_test();
+
     /**
      * @brief err_message set error message from user
      * @param err_str message error
      */
     void err_message(const QString& err_str) const;
+
+    void set_new_square();
 };
 #endif // UIMINDFULNESS_HPP

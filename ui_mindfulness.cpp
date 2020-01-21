@@ -6,6 +6,7 @@
 #include <QPolygon>
 #include <QKeyEvent>
 #include <QColor>
+#include <QGraphicsItem>
 
 #include <QDebug>
 
@@ -55,73 +56,24 @@ UiMindfulness::UiMindfulness(QWidget *parent)
     /* time */
     setup_time();
     /* test frame */
-    repaint();
+    setup_test();
 }
 
 UiMindfulness::~UiMindfulness()
 {
     delete ui;
+    delete m_scren;
 }
 
-void UiMindfulness::paintEvent(QPaintEvent *ev)
+void UiMindfulness::keyPressEvent(QKeyEvent *ev)
 {
     if(ui->m_main_tab_widget->currentIndex() != C_IDX_TEST){
         return;
     }
 
-    std::random_device rd;
-    std::mt19937 e2(rd());
-    std::uniform_int_distribution<int> dist(0,1);
-
-    const int32_t idx_rand = dist(e2);
-
-    if(idx_rand == 0){
-        m_color_save = Qt::red;
-    }
-    else{
-        m_color_save = Qt::blue;
-    }
-
-    QPainter painter(this);
-    constexpr int32_t line_width = 1;
-
-    painter.setPen(QPen(Qt::black, line_width, Qt::SolidLine, Qt::FlatCap));
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setBrush(QBrush(m_color_save, Qt::SolidPattern));
-
-    /* input frame */
-    const int32_t x_lhs  = ui->m_frame_test->geometry().x();
-    const int32_t y_lhs  = ui->m_frame_test->geometry().y();
-    const int32_t width  = ui->m_frame_test->width();
-    const int32_t height = ui->m_frame_test->height();
-    qDebug() << "hello!";
-
-    const int32_t min_length = qMin<int32_t>(width,height);
-
-    const int32_t half_square_width = static_cast<int32_t>(min_length*0.8/2);
-
-    /* copmpute x|y mid  */
-
-    const int32_t x_mid = x_lhs + width/2;
-    const int32_t y_mid = y_lhs + height/2;
-
-    const int32_t x_sq_left  = x_mid - half_square_width;
-    const int32_t x_sq_right = x_mid + half_square_width;
-
-    const int32_t y_sq_top = y_mid - half_square_width;
-    const int32_t y_sq_bot = y_mid + half_square_width;
-
-    const QPolygon poligon{ { QPoint(x_sq_left,y_sq_top), QPoint(x_sq_right,y_sq_top), QPoint(x_sq_right,y_sq_bot), QPoint(x_sq_left,y_sq_bot) } };
-
-    painter.drawPolygon(poligon);
-    return;
-}
-
-void UiMindfulness::keyPressEvent(QKeyEvent *ev)
-{
     const int32_t key = ev->key();
     if( key == Qt::Key_Space or key == Qt::Key_Up ){
-        repaint();
+        set_new_square();
     }
     return;
 }
@@ -206,11 +158,80 @@ void UiMindfulness::setup_time()
     return;
 }
 
+void UiMindfulness::setup_test()
+{
+    m_scren = new QGraphicsScene(this);
+    ui->graphicsView->setScene(m_scren);
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);    // Настраиваем рендер
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Отключим скроллбар по горизонтали
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);   // Отключим скроллбар по вертикали
+
+    return;
+}
+
 void UiMindfulness::err_message(const QString& err_str) const
 {
     QMessageBox::critical(NULL,ERR_TITLE,err_str,
                           QMessageBox::Ok,
                           QMessageBox::Cancel);
+    return;
+}
+
+void UiMindfulness::set_new_square()
+{
+    std::random_device rd;
+    std::mt19937 e2(rd());
+    std::uniform_int_distribution<int> dist(0,1);
+
+    const int32_t idx_rand = dist(e2);
+
+    if(idx_rand == 0){
+        m_color_save = Qt::red;
+    }
+    else{
+        m_color_save = Qt::blue;
+    }
+
+    /* input frame */
+    const int32_t x_lhs  = ui->graphicsView->geometry().x();
+    const int32_t y_lhs  = ui->graphicsView->geometry().y();
+    const int32_t width  = ui->graphicsView->width();
+    const int32_t height = ui->graphicsView->height();
+
+
+    const int32_t min_length = qMin<int32_t>(width,height);
+
+    const int32_t half_square_width = static_cast<int32_t>(min_length*0.8/2);
+    const int32_t sq_width = half_square_width*2;
+
+    /* copmpute x|y mid  */
+
+    const int32_t x_mid = x_lhs + width/2;
+    const int32_t y_mid = y_lhs + height/2;
+
+    const int32_t x_sq_left  = x_mid - half_square_width;
+    const int32_t y_sq_top = y_mid - half_square_width;
+
+
+    constexpr int32_t line_width = 1;
+
+    const QPen c_pen = QPen(Qt::black, line_width, Qt::SolidLine, Qt::FlatCap);
+    const QBrush c_brush = QBrush(m_color_save, Qt::SolidPattern);
+
+    const int32_t n_items = ui->graphicsView->items().size();
+
+    if(n_items == 0){
+        m_scren->addRect(x_sq_left,y_sq_top,sq_width,sq_width,c_pen,c_brush);
+    }
+    else{
+        QGraphicsItem* item = ui->graphicsView->items()[0];
+        QGraphicsRectItem* sq_item = dynamic_cast<QGraphicsRectItem*>(item);
+        sq_item->setRect(x_sq_left,y_sq_top,sq_width,sq_width);
+        sq_item->setPen(c_pen);
+        sq_item->setBrush(c_brush);
+    }
+    qDebug() << "Sise = " << ui->graphicsView->items().size();
+
     return;
 }
 
@@ -235,5 +256,7 @@ void UiMindfulness::on_m_push_button_info_clicked()
     constexpr bool is_enable = true;
     ui->m_main_tab_widget->setTabEnabled(C_IDX_TEST,is_enable);
     ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,not is_enable);
+    /* set square */
+    set_new_square();
     return;
 }
