@@ -2,13 +2,16 @@
 #include "ui_ui_mindfulness.h"
 #include <QRegExpValidator>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPolygon>
 #include <QKeyEvent>
 #include <QColor>
 #include <QGraphicsItem>
 #include <QSizePolicy>
+<<<<<<< HEAD
 #include <QTableWidget>
+=======
+#include <QFileDialog>
+#include <QTimer>
+>>>>>>> releace
 
 #include <QDebug>
 
@@ -16,6 +19,10 @@
 
 #include "graphics_view.hpp"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> releace
 static constexpr int32_t C_IDX_REGI = 0;
 static constexpr int32_t C_IDX_TIME = 1;
 static constexpr int32_t C_IDX_INFO = 2;
@@ -51,7 +58,11 @@ static const QStringList C_LIST_TT = {
 
 static const QStringList C_LIST_HDR = {
     "Наименование",
+<<<<<<< HEAD
     "Конечные данные"
+=======
+    "Данные тестируемого"
+>>>>>>> releace
 };
 
 static const QStringList C_LIST_ROW = {
@@ -69,7 +80,12 @@ static const QStringList C_LIST_ROW = {
     "Среднее время потраченное на Правельный ответ ( ms )"
 };
 
+<<<<<<< HEAD
 static const int32_t C_MAX_TEST = 10;
+=======
+
+static const int32_t C_MAX_TEST = 3;
+>>>>>>> releace
 
 static const QString C_MAX_TEST_STR = QString().sprintf("%03d", C_MAX_TEST);
 
@@ -103,15 +119,22 @@ void UiMindfulness::keyPressEvent(QKeyEvent *ev)
 
     const int32_t key = ev->key();
     if( key == Qt::Key_Space ){
+<<<<<<< HEAD
         qDebug() << "Space -> " << key;
+=======
+>>>>>>> releace
         if(m_color_save == QColor(Qt::red)){
             m_save_data.increment_correct_answer();
             m_save_data.summ_correct_time += m_one_test.restart();
         }
         set_new_square();
     }
+<<<<<<< HEAD
     else if(key == Qt::Key_Enter or key == Qt::Key_Return){
         qDebug() << "Enter -> " << key;
+=======
+    if(key == Qt::Key_Enter or key == Qt::Key_Return){
+>>>>>>> releace
         if(m_color_save == QColor(Qt::blue)){
             m_save_data.increment_correct_answer();
             m_save_data.summ_correct_time += m_one_test.restart();
@@ -143,17 +166,21 @@ void UiMindfulness::on_push_button_reg_next_clicked()
         return;
     }
     /* save data */
-    m_save_data.first_name  = ui->m_line_edit_fn->text();
-    m_save_data.second_name = ui->m_line_edit_sn->text();
-    m_save_data.third_name  = ui->m_line_edit_tn->text();
+    m_save_data.first_name  = to_title(ui->m_line_edit_fn->text());
+    m_save_data.second_name = to_title(ui->m_line_edit_sn->text());
+    m_save_data.third_name  = to_title(ui->m_line_edit_tn->text());
     m_save_data.year        = ui->m_spin_box_years->value();
-    m_save_data.group       = ui->m_line_edit_group->text();
+    m_save_data.group       = ui->m_line_edit_group->text().toUpper();
 
     /* unmute time test and mute regisgtation */
+<<<<<<< HEAD
     constexpr bool is_enable = true;
 
     ui->m_main_tab_widget->setTabEnabled(C_IDX_TIME,is_enable);
     ui->m_main_tab_widget->setTabEnabled(C_IDX_REGI,not is_enable);
+=======
+    set_mute_unmute_tab(/* idx_mute = */C_IDX_REGI,/* idx_unmute = */C_IDX_TIME);
+>>>>>>> releace
 
     return;
 }
@@ -161,7 +188,7 @@ void UiMindfulness::on_push_button_reg_next_clicked()
 void UiMindfulness::setup_registation()
 {
     /* f|s|t name */
-    const QRegExp rx_rus("[А-Я][а-я]+");
+    const QRegExp rx_rus("[А-Яа-я]+");
     ui->m_line_edit_fn->setValidator(new QRegExpValidator(rx_rus));
     ui->m_line_edit_sn->setValidator(new QRegExpValidator(rx_rus));
     ui->m_line_edit_tn->setValidator(new QRegExpValidator(rx_rus));
@@ -208,13 +235,21 @@ void UiMindfulness::setup_time()
 
 void UiMindfulness::setup_test()
 {
+<<<<<<< HEAD
     m_view = new libif::GraphicsView(ui->widget);
+=======
+    m_view = new GraphicsView(ui->m_widget_test);
+>>>>>>> releace
 
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->addWidget(m_view);
 
+<<<<<<< HEAD
     ui->widget->setLayout(layout);
+=======
+    ui->m_widget_test->setLayout(layout);
+>>>>>>> releace
 
     m_scren = new QGraphicsScene(this);
     m_scren->setSceneRect(QRectF(0.0, 0.0, 1000.0, 1000.0));
@@ -222,6 +257,11 @@ void UiMindfulness::setup_test()
     m_view->setScene(m_scren);
     m_view->setViewRect(m_scren->sceneRect());
 
+<<<<<<< HEAD
+=======
+    ui->m_label_test_info->setText("<b><font color='red'>Красный</font></b> - Spase | <b><font color='blue'>Синий</font></b> - Enter");
+
+>>>>>>> releace
     return;
 }
 
@@ -281,11 +321,19 @@ void UiMindfulness::set_new_square()
         m_color_save = Qt::blue;
         ui->statusbar->showMessage("Голубой");
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> releace
     const int32_t line_width = 1;
     const QPen c_pen = QPen(Qt::black, line_width, Qt::SolidLine, Qt::FlatCap);
     const QBrush c_brush = QBrush(m_color_save, Qt::SolidPattern);
 
     const int32_t n_items = m_view->items().size();
+<<<<<<< HEAD
+=======
+
+>>>>>>> releace
 
     if(n_items == 0){
         m_scren->addRect(250.0, 250.0, 500.0, 500.0, c_pen, c_brush);
@@ -305,6 +353,27 @@ void UiMindfulness::set_new_square()
     }
     m_save_data.increment_test();
     update_lable(m_save_data.count_test);
+
+    return;
+}
+
+void UiMindfulness::start_test()
+{
+    m_time_test.start();
+
+    m_timer_test = new QTimer(this);
+
+    connect(m_timer_test,&QTimer::timeout,
+            this,&UiMindfulness::update_timer
+            );
+    /* set max sec */
+    const int32_t idx_time_m = ui->m_combo_box_time_test->currentIndex();
+    /* set max time */
+    if(idx_time_m == 0)     { m_max_test_sec =  60; }
+    else if(idx_time_m == 1){ m_max_test_sec = 120; }
+    else                    { m_max_test_sec = 180; }
+
+    m_timer_test->start(/* msec = */1000);
 
     return;
 }
@@ -329,13 +398,19 @@ void UiMindfulness::end_test()
     tw_res.item(3,col_answer)->setText(QString::number(m_save_data.year));
     tw_res.item(4,col_answer)->setText(m_save_data.group);
     tw_res.item(5,col_answer)->setText(m_save_data.time_day);
-    tw_res.item(6,col_answer)->setText(m_save_data.date.toString());
+    tw_res.item(6,col_answer)->setText(m_save_data.date.toString("dd.MM.yyyy"));
     tw_res.item(7,col_answer)->setText(m_save_data.day_weak);
 
     tw_res.item(8,col_answer)->setText(QString::number(m_test_ms));
     tw_res.item(9,col_answer)->setText(QString::number(m_save_data.n_correct));
     tw_res.item(10,col_answer)->setText(QString::number(m_save_data.count_test - m_save_data.n_correct ));
-    tw_res.item(11,col_answer)->setText(QString::number( m_save_data.summ_correct_time/static_cast<float>(m_save_data.n_correct) ));
+    const int32_t n_correct_answer = m_save_data.n_correct;
+    if(n_correct_answer == 0){
+        tw_res.item(11,col_answer)->setText(QString::number(0.0));
+    }
+    else{
+        tw_res.item(11,col_answer)->setText(QString::number( m_save_data.summ_correct_time/static_cast<float>(m_save_data.n_correct) ));
+    }
 
     return;
 }
@@ -348,6 +423,45 @@ void UiMindfulness::update_lable(const int32_t number)
     return;
 }
 
+void UiMindfulness::set_mute_unmute_tab(const int32_t idx_mute, const int32_t idx_unmute)
+{
+    constexpr bool is_enable = true;
+    ui->m_main_tab_widget->setTabEnabled(idx_unmute,is_enable);
+    ui->m_main_tab_widget->setTabEnabled(idx_mute,not is_enable);
+    return;
+}
+
+void UiMindfulness::update_timer()
+{
+    --m_max_test_sec;
+    if( m_max_test_sec > 0){
+        const QTime cur_time = second_to_time(m_max_test_sec);
+        ui->m_time_edit_test->setTime(cur_time);
+    }
+    else{
+        m_timer_test->stop();
+        end_test();
+    }
+    return;
+}
+
+QString UiMindfulness::to_title(const QString &str)
+{
+    QString str_out = str;
+    if(not str_out.isEmpty()){
+       str_out = str_out.toLower();
+       str_out[0] = str_out[0].toUpper();
+    }
+    return str_out;
+}
+
+QTime UiMindfulness::second_to_time(const int32_t second) const
+{
+    int32_t cur_minute = second / 60;
+    int32_t cur_second = second - cur_minute*60;
+    return QTime(0,cur_minute,cur_second);
+}
+
 void UiMindfulness::on_push_button_time_next_clicked()
 {
     m_save_data.time_day      = ui->m_combo_box_time_day->currentText();
@@ -356,9 +470,7 @@ void UiMindfulness::on_push_button_time_next_clicked()
     m_save_data.idx_time_test = ui->m_combo_box_time_test->currentIndex();
 
     /* unmute information test and mute time test */
-    constexpr bool is_enable = true;
-    ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,is_enable);
-    ui->m_main_tab_widget->setTabEnabled(C_IDX_TIME,not is_enable);
+    set_mute_unmute_tab(/* idx_mute = */C_IDX_TIME,/* idx_unmute = */C_IDX_INFO);
 
     return;
 }
@@ -366,11 +478,41 @@ void UiMindfulness::on_push_button_time_next_clicked()
 void UiMindfulness::on_m_push_button_info_clicked()
 {
     /* unmute Test and mute information test */
-    constexpr bool is_enable = true;
-    ui->m_main_tab_widget->setTabEnabled(C_IDX_TEST,is_enable);
-    ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,not is_enable);
+    set_mute_unmute_tab(/* idx_mute = */C_IDX_INFO,/* idx_unmute = */C_IDX_TEST);
+
     /* set square */
     set_new_square();
-    m_time_test.start();
+
+    /* start test */
+    start_test();
+
+    return;
+}
+
+void UiMindfulness::on_m_push_button_save_clicked()
+{
+    const QString file_name = QFileDialog::getSaveFileName(this,
+                                                           tr("Имя Файла"),
+                                                           QDir::homePath(),
+                                                           tr("File (*.txt)")
+                                                           );
+    if(file_name == ""){ return; }
+
+    QFile file_out(file_name);
+    file_out.open(QIODevice::WriteOnly | QIODevice::Text);
+
+    QTextStream s_out(&file_out);
+
+    const QTableWidget& tw_res = *ui->m_table_widget_result;
+    int32_t i_r; /* loop row */
+
+    const int32_t n_row = static_cast<int32_t>(tw_res.rowCount());
+
+    for(i_r = 0; i_r < n_row; ++i_r){
+        s_out << tw_res.item(i_r,0)->text() << " : " << tw_res.item(i_r,1)->text() << "\n";
+    }
+
+    file_out.flush();
+    file_out.close();
     return;
 }
