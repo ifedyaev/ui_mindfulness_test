@@ -3,8 +3,9 @@
 #include <QString>
 #include <QDate>
 
-namespace libif {
-class SaveDataUser{
+namespace libif { class SaveDataUser; }
+
+class libif::SaveDataUser{
 public:
     QString first_name;         /* Фамилия */
     QString second_name;        /* Имя */
@@ -28,6 +29,6 @@ public:
 
     inline void increment_test() noexcept{ ++count_test; return; }
 };/* end class SaveDataUser */
-}/* end namespace libif */
+
 
 #endif // SAVE_DATA_HPP

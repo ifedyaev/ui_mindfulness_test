@@ -21,7 +21,8 @@ SOURCES += \
 
 HEADERS += \
     save_data.hpp \
-    ui_mindfulness.hpp
+    ui_mindfulness.hpp \
+    graphics_view.hpp
 
 FORMS += \
     ui_mindfulness.ui

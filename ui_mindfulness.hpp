@@ -8,6 +8,11 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class UiMindfulness; }
 QT_END_NAMESPACE
 
+namespace libif {
+class SaveDataUser;
+class GraphicsView;
+}
+
 #include "save_data.hpp"
 
 class UiMindfulness : public QMainWindow
@@ -28,13 +33,15 @@ private slots:
     void on_m_push_button_info_clicked();
 
 private:
-    Ui::UiMindfulness *ui;
+    Ui::UiMindfulness *ui{nullptr};
 
     libif::SaveDataUser m_save_data;
 
-    QColor m_color_save;
-
+    /* graphics view */
+    libif::GraphicsView* m_view{nullptr};
     QGraphicsScene* m_scren{nullptr};
+
+    QColor m_color_save;
 
     QTime m_time_test;
     int32_t m_test_ms{0};

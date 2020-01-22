@@ -8,10 +8,13 @@
 #include <QColor>
 #include <QGraphicsItem>
 #include <QSizePolicy>
+#include <QTableWidget>
 
 #include <QDebug>
 
 #include <random>
+
+#include "graphics_view.hpp"
 
 static constexpr int32_t C_IDX_REGI = 0;
 static constexpr int32_t C_IDX_TIME = 1;
@@ -46,7 +49,27 @@ static const QStringList C_LIST_TT = {
     "3 мин."
 };
 
-static const int32_t C_MAX_TEST = 3;
+static const QStringList C_LIST_HDR = {
+    "Наименование",
+    "Конечные данные"
+};
+
+static const QStringList C_LIST_ROW = {
+    "Фамилия",
+    "Имя",
+    "Отчество",
+    "Возраст",
+    "Группа",
+    "Время Суток",
+    "Дата",
+    "День Недели",
+    "Время затраченное на тест ( ms )",
+    "Количество правельных ответов",
+    "Количество не правельных ответов",
+    "Среднее время потраченное на Правельный ответ ( ms )"
+};
+
+static const int32_t C_MAX_TEST = 10;
 
 static const QString C_MAX_TEST_STR = QString().sprintf("%03d", C_MAX_TEST);
 
@@ -79,19 +102,24 @@ void UiMindfulness::keyPressEvent(QKeyEvent *ev)
     }
 
     const int32_t key = ev->key();
-    if( key == Qt::Key_Z ){
+    if( key == Qt::Key_Space ){
+        qDebug() << "Space -> " << key;
         if(m_color_save == QColor(Qt::red)){
             m_save_data.increment_correct_answer();
             m_save_data.summ_correct_time += m_one_test.restart();
         }
         set_new_square();
     }
-    if(key == Qt::Key_M){
+    else if(key == Qt::Key_Enter or key == Qt::Key_Return){
+        qDebug() << "Enter -> " << key;
         if(m_color_save == QColor(Qt::blue)){
             m_save_data.increment_correct_answer();
             m_save_data.summ_correct_time += m_one_test.restart();
         }
         set_new_square();
+    }
+    else{
+//        QDialog::keyPressEvent(ev);
     }
     return;
 }
@@ -123,6 +151,7 @@ void UiMindfulness::on_push_button_reg_next_clicked()
 
     /* unmute time test and mute regisgtation */
     constexpr bool is_enable = true;
+
     ui->m_main_tab_widget->setTabEnabled(C_IDX_TIME,is_enable);
     ui->m_main_tab_widget->setTabEnabled(C_IDX_REGI,not is_enable);
 
@@ -144,6 +173,7 @@ void UiMindfulness::setup_registation()
     ui->m_main_tab_widget->setTabEnabled(C_IDX_INFO,is_enable);
     ui->m_main_tab_widget->setTabEnabled(C_IDX_TEST,is_enable);
     ui->m_main_tab_widget->setTabEnabled(C_IDX_RESU,is_enable);
+    return;
 }
 
 void UiMindfulness::setup_time()
@@ -178,30 +208,22 @@ void UiMindfulness::setup_time()
 
 void UiMindfulness::setup_test()
 {
+    m_view = new libif::GraphicsView(ui->widget);
+
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setMargin(0);
+    layout->addWidget(m_view);
+
+    ui->widget->setLayout(layout);
+
     m_scren = new QGraphicsScene(this);
-    ui->graphicsView->setScene(m_scren);
+    m_scren->setSceneRect(QRectF(0.0, 0.0, 1000.0, 1000.0));
+
+    m_view->setScene(m_scren);
+    m_view->setViewRect(m_scren->sceneRect());
+
     return;
 }
-
-static const QStringList C_LIST_HDR = {
-    "Наименование",
-    "Значение"
-};
-
-static const QStringList C_LIST_ROW = {
-    "Фамилия",
-    "Имя",
-    "Отчество",
-    "Возраст",
-    "Группа",
-    "Время Суток",
-    "Дата",
-    "День Недели",
-    "Время затраченное на тест ( ms )",
-    "Количество правельных ответов",
-    "Количество не правельных ответов",
-    "Среднее время потраченное на Правельный ответ ( ms )"
-};
 
 void UiMindfulness::setup_result()
 {
@@ -230,6 +252,8 @@ void UiMindfulness::setup_result()
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         tw_res.setItem(i,1,item);
     }
+
+    ui->m_time_edit_test->setEnabled(false);
     return;
 }
 
@@ -257,45 +281,18 @@ void UiMindfulness::set_new_square()
         m_color_save = Qt::blue;
         ui->statusbar->showMessage("Голубой");
     }
-
-    /* input frame */
-    const QPoint p_lt = ui->graphicsView->geometry().topLeft();
-    const QPoint p_real = ui->graphicsView->mapFromScene( p_lt );
-    qDebug() << p_lt ;
-    qDebug() << p_real ;
-
-    const int32_t x_lhs  = qAbs(p_real.x());
-    const int32_t y_lhs  = qAbs(p_real.y());
-    const int32_t width  = ui->graphicsView->width();
-    const int32_t height = ui->graphicsView->height();
-
-    const int32_t min_length = qMin<int32_t>(width,height);
-
-    const int32_t half_square_width = static_cast<int32_t>(min_length*0.8/2);
-    const int32_t sq_width = half_square_width*2;
-
-    /* copmpute x|y mid  */
-
-    const int32_t x_mid = x_lhs + width/2;
-    const int32_t y_mid = y_lhs + height/2;
-
-    const int32_t x_sq_left = x_mid - half_square_width;
-    const int32_t y_sq_top  = y_mid - half_square_width;
-
-    constexpr int32_t line_width = 1;
-
+    const int32_t line_width = 1;
     const QPen c_pen = QPen(Qt::black, line_width, Qt::SolidLine, Qt::FlatCap);
     const QBrush c_brush = QBrush(m_color_save, Qt::SolidPattern);
 
-    const int32_t n_items = ui->graphicsView->items().size();
+    const int32_t n_items = m_view->items().size();
 
     if(n_items == 0){
-        QGraphicsRectItem* sq_item = m_scren->addRect(x_sq_left,y_sq_top,sq_width,sq_width,c_pen,c_brush);
+        m_scren->addRect(250.0, 250.0, 500.0, 500.0, c_pen, c_brush);
     }
     else{
-        QGraphicsItem* item = ui->graphicsView->items()[0];
-        QGraphicsRectItem* sq_item = dynamic_cast<QGraphicsRectItem*>(item);
-        sq_item->setRect(x_sq_left,y_sq_top,sq_width,sq_width);
+        QGraphicsRectItem* sq_item = static_cast<QGraphicsRectItem*>(m_view->items().first());
+        sq_item->setRect(250.0, 250.0, 500.0, 500.0);
         sq_item->setPen(c_pen);
         sq_item->setBrush(c_brush);
     }
