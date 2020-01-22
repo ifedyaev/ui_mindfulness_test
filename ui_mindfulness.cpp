@@ -15,7 +15,6 @@
 
 #include "graphics_view.hpp"
 
-
 static constexpr int32_t C_IDX_REGI = 0;
 static constexpr int32_t C_IDX_TIME = 1;
 static constexpr int32_t C_IDX_INFO = 2;
@@ -25,7 +24,7 @@ static constexpr int32_t C_IDX_RESU = 4;
 static const QString ERR_TITLE = "Ошибка вводимых параметров";
 static const QString ERR_FNAME = "Не введена Фамилия";
 static const QString ERR_SNAME = "Не введено Имя";
-static const QString ERR_GROUP = "Не ведена группа";
+static const QString ERR_GROUP = "Не ведена Группа";
 
 static const QStringList C_LIST_WEAK = {
     "Понеденьник",
@@ -65,13 +64,11 @@ static const QStringList C_LIST_ROW = {
     "День Недели",
     "Время затраченное на тест ( ms )",
     "Количество правельных ответов",
-    "Количество не правельных ответов",
+    "Количество неправельных ответов",
     "Среднее время потраченное на Правельный ответ ( ms )"
 };
 
-
-static const int32_t C_MAX_TEST = 3;
-
+static const int32_t C_MAX_TEST = 100;
 static const QString C_MAX_TEST_STR = QString().sprintf("%03d", C_MAX_TEST);
 
 UiMindfulness::UiMindfulness(QWidget *parent)
@@ -414,7 +411,6 @@ void UiMindfulness::on_push_button_time_next_clicked()
     m_save_data.time_day      = ui->m_combo_box_time_day->currentText();
     m_save_data.date          = ui->m_date_edit_time->date();
     m_save_data.day_weak      = ui->m_combo_box_weak_day->currentText();
-    m_save_data.idx_time_test = ui->m_combo_box_time_test->currentIndex();
 
     /* unmute information test and mute time test */
     set_mute_unmute_tab(/* idx_mute = */C_IDX_TIME,/* idx_unmute = */C_IDX_INFO);
