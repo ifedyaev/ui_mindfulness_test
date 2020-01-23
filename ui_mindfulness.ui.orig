@@ -24,7 +24,15 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
+<<<<<<< HEAD
+<<<<<<< HEAD
        <number>0</number>
+=======
+       <number>3</number>
+>>>>>>> releace
+=======
+       <number>0</number>
+>>>>>>> ttt
       </property>
       <widget class="QWidget" name="tab_registration">
        <attribute name="title">
@@ -400,8 +408,18 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;Инфомационное окно для прохождения теста на утомляемость&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+<<<<<<< HEAD
+<<<<<<< HEAD
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;Если всплявает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#cc0000;&quot;&gt;Красный Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;пробел&amp;quot; ( )&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;&lt;br /&gt;Если всплывает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#204a87;&quot;&gt;Синий Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;стрелочка вверх&amp;quot; ()&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+=======
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;Если всплявает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#cc0000;&quot;&gt;Красный Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;Пробел&amp;quot; ( Spase )&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;&lt;br /&gt;Если всплывает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#204a87;&quot;&gt;Синий Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; то нажмите клавишу &amp;quot;Ввод&amp;quot; ( Enter )&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+>>>>>>> releace
+=======
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;Если всплявает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#cc0000;&quot;&gt;Красный Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; , то нажмите клавишу &amp;quot;Пробел&amp;quot; ( Spase )&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt;&lt;br /&gt;Если всплывает &lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt; font-weight:600; color:#204a87;&quot;&gt;Синий Квадрат&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:16pt;&quot;&gt; , то нажмите клавишу &amp;quot;Ввод&amp;quot; ( Enter )&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+>>>>>>> ttt
           </property>
          </widget>
         </item>
@@ -469,6 +487,14 @@ p, li { white-space: pre-wrap; }
        </attribute>
        <layout class="QGridLayout" name="gridLayout_7">
         <item row="0" column="0">
+<<<<<<< HEAD
+         <widget class="QWidget" name="widget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+=======
          <widget class="QLabel" name="m_label_test_info">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -486,7 +512,7 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
-
+>>>>>>> releace
           </property>
          </widget>
         </item>
@@ -525,12 +551,17 @@ p, li { white-space: pre-wrap; }
           <item>
            <widget class="QTimeEdit" name="m_time_edit_test">
             <property name="enabled">
+<<<<<<< HEAD
+             <bool>false</bool>
+=======
              <bool>true</bool>
-
+>>>>>>> releace
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
+<<<<<<< HEAD
+=======
             <property name="wrapping">
              <bool>false</bool>
             </property>
@@ -555,7 +586,7 @@ p, li { white-space: pre-wrap; }
             <property name="calendarPopup">
              <bool>false</bool>
             </property>
-
+>>>>>>> releace
            </widget>
           </item>
          </layout>
@@ -567,8 +598,55 @@ p, li { white-space: pre-wrap; }
         <string>Результат</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_8">
+<<<<<<< HEAD
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <spacer name="horizontalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_10">
+            <property name="font">
+             <font>
+              <pointsize>20</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Итоги Теста</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_14">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+=======
         <item row="1" column="0" colspan="2">
-
+>>>>>>> releace
          <widget class="QTableWidget" name="m_table_widget_result"/>
         </item>
         <item row="2" column="0">
@@ -587,8 +665,11 @@ p, li { white-space: pre-wrap; }
            </spacer>
           </item>
           <item>
+<<<<<<< HEAD
+           <widget class="QPushButton" name="pushButton">
+=======
            <widget class="QPushButton" name="m_push_button_save">
-
+>>>>>>> releace
             <property name="text">
              <string>Сохранить</string>
             </property>
@@ -596,6 +677,8 @@ p, li { white-space: pre-wrap; }
           </item>
          </layout>
         </item>
+<<<<<<< HEAD
+=======
         <item row="0" column="0" colspan="2">
          <widget class="QLabel" name="label_10">
           <property name="sizePolicy">
@@ -617,7 +700,7 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
-
+>>>>>>> releace
        </layout>
       </widget>
      </widget>
@@ -629,8 +712,16 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
+<<<<<<< HEAD
+     <width>729</width>
+=======
      <width>695</width>
+<<<<<<< HEAD
+>>>>>>> releace
+     <height>25</height>
+=======
      <height>22</height>
+>>>>>>> ttt
     </rect>
    </property>
   </widget>

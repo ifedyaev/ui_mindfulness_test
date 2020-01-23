@@ -2,17 +2,10 @@
 #define GRAPHICS_VIEW_HPP
 
 #include <QGraphicsView>
-<<<<<<< HEAD
-
-
-namespace libif { class GraphicsView; }
-
-class libif::GraphicsView : public QGraphicsView
-=======
 #include <stdint.h>
 
 class GraphicsView : public QGraphicsView
->>>>>>> releace
+
 {
 public:
     GraphicsView( QWidget* parent )

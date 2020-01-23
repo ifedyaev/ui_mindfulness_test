@@ -37,10 +37,6 @@ private slots:
     void on_m_push_button_save_clicked();
 
 private:
-<<<<<<< HEAD
-    Ui::UiMindfulness *ui{nullptr};
-=======
->>>>>>> releace
 
     Ui::UiMindfulness *ui{nullptr};     /* GUI */
 
@@ -51,16 +47,6 @@ private:
     libif::SaveDataUser m_save_data;    /* save data test user */
     QColor m_color_save;                /* color now view square */
 
-<<<<<<< HEAD
-    /* graphics view */
-    libif::GraphicsView* m_view{nullptr};
-    QGraphicsScene* m_scren{nullptr};
-
-    QColor m_color_save;
-
-    QTime m_time_test;
-    int32_t m_test_ms{0};
-=======
     QTime m_time_test;                  /* */
     int32_t m_test_ms{0};               /* */
 
@@ -69,7 +55,7 @@ private:
     QTimer* m_timer_test;
 
     int32_t m_max_test_sec{0};
->>>>>>> releace
+
 
 private:
     /**
