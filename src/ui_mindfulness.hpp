@@ -137,5 +137,8 @@ private:
      * @return QTimer
      */
     inline QTime second_to_time(const int32_t second) const noexcept;
+
+
+    inline QString str_to_utf8(const QString& str)const noexcept;
 };
 #endif // UIMINDFULNESS_HPP

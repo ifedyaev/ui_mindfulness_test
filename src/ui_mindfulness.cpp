@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QTextStream>
+#include <QTextCodec>
 
 #include <random> /* c++11 standart */
 
@@ -110,7 +111,7 @@ void UiMindfulness::keyPressEvent(QKeyEvent *ev)
         set_new_square();
     }
     else{
-//        QDialog::keyPressEvent(ev);
+        //        QDialog::keyPressEvent(ev);
     }
     return;
 }
@@ -396,8 +397,8 @@ QString UiMindfulness::to_title(const QString &str) const noexcept
 {
     QString str_out = str;
     if(not str_out.isEmpty()){
-       str_out = str_out.toLower();
-       str_out[0] = str_out[0].toUpper();
+        str_out = str_out.toLower();
+        str_out[0] = str_out[0].toUpper();
     }
     return str_out;
 }
@@ -407,6 +408,18 @@ QTime UiMindfulness::second_to_time(const int32_t second) const noexcept
     int32_t cur_minute = second / 60;
     int32_t cur_second = second - cur_minute*60;
     return QTime(0,cur_minute,cur_second);
+}
+
+QString UiMindfulness::str_to_utf8(const QString& str) const noexcept
+{
+    const QTextCodec* codec_local = QTextCodec::codecForLocale();
+    QByteArray arr_resul_local;
+    arr_resul_local.insert(0,str);
+
+    const QString str_result_unicode = codec_local->toUnicode(arr_resul_local);
+    const QTextCodec *codec_utf8 = QTextCodec::codecForName("UTF-8");
+    QString str_result_utf8 = codec_utf8->fromUnicode(str_result_unicode);
+    return str_result_utf8;
 }
 
 void UiMindfulness::on_push_button_time_next_clicked()
@@ -454,8 +467,15 @@ void UiMindfulness::on_m_push_button_save_clicked()
 
     const int32_t n_row = static_cast<int32_t>(tw_res.rowCount());
 
+    const QString comment_utf8 = str_to_utf8("/* -*- coding: utf-8 -*- */");
+    const QString end = str_to_utf8("\n");
+    const QString sep = str_to_utf8(" : ");
+
+    s_out << comment_utf8 << end;
     for(i_r = 0; i_r < n_row; ++i_r){
-        s_out << tw_res.item(i_r,0)->text() << " : " << tw_res.item(i_r,1)->text() << "\n";
+        const QString lhs_str = str_to_utf8(tw_res.item(i_r,0)->text());
+        const QString rhs_str = str_to_utf8(tw_res.item(i_r,1)->text());
+        s_out << lhs_str << sep << rhs_str << end;
     }
 
     file_out.flush();
