@@ -1,20 +1,14 @@
 #include "ui_mindfulness.hpp"
 #include "ui_ui_mindfulness.h"
+
 #include <QRegExpValidator>
 #include <QMessageBox>
-#include <QKeyEvent>
-#include <QColor>
 #include <QGraphicsItem>
 #include <QSizePolicy>
 #include <QFileDialog>
 #include <QTimer>
 
-#include <QFileDialog>
-#include <QTimer>
-
-#include <QDebug>
-
-#include <random>
+#include <random> /* c++11 standart */
 
 #include "graphics_view.hpp"
 
@@ -89,12 +83,6 @@ UiMindfulness::UiMindfulness(QWidget *parent)
     setup_test();
     /* result */
     setup_result();
-}
-
-UiMindfulness::~UiMindfulness()
-{
-    delete ui;
-    delete m_scren;
 }
 
 void UiMindfulness::keyPressEvent(QKeyEvent *ev)
@@ -207,24 +195,21 @@ void UiMindfulness::setup_time()
 
 void UiMindfulness::setup_test()
 {
-    m_view = new GraphicsView(ui->m_widget_test);
-
+    m_view = std::make_shared<GraphicsView>(ui->m_widget_test);
 
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setMargin(0);
-    layout->addWidget(m_view);
+    layout->addWidget(m_view.get());
 
     ui->m_widget_test->setLayout(layout);
 
-
-    m_scren = new QGraphicsScene(this);
+    m_scren = std::make_shared<QGraphicsScene>(this);
     m_scren->setSceneRect(QRectF(0.0, 0.0, 1000.0, 1000.0));
 
-    m_view->setScene(m_scren);
+    m_view->setScene(m_scren.get());
     m_view->setViewRect(m_scren->sceneRect());
 
     ui->m_label_test_info->setText("<b><font color='red'>Красный</font></b> - Spase | <b><font color='blue'>Синий</font></b> - Enter");
-
 
     return;
 }
@@ -321,11 +306,11 @@ void UiMindfulness::start_test()
 {
     m_time_test.start();
 
-    m_timer_test = new QTimer(this);
+    m_timer_test = std::make_shared<QTimer>(this);
 
-    connect(m_timer_test,&QTimer::timeout,
-            this,&UiMindfulness::update_timer
-            );
+    connect(m_timer_test.get(),&QTimer::timeout,
+            this,&UiMindfulness::update_timer);
+
     /* set max sec */
     const int32_t idx_time_m = ui->m_combo_box_time_test->currentIndex();
     /* set max time */

@@ -1,5 +1,11 @@
 #ifndef UIMINDFULNESS_HPP
 #define UIMINDFULNESS_HPP
+/* coding utf-8
+ * Программа для проведения теста на внимательность.
+ * Автор:       Федяев Игорь
+ * Автор Идеи:  Мухутдинова Нейля
+ * Дата окночания написания: 23.01.2020 г.
+ */
 
 #include <QMainWindow>
 #include <QGraphicsScene>
@@ -23,7 +29,7 @@ class UiMindfulness : public QMainWindow
 
 public:
     UiMindfulness(QWidget *parent = nullptr);
-    ~UiMindfulness();
+    ~UiMindfulness() = default;
 
     void keyPressEvent(QKeyEvent* ev);
 
@@ -36,26 +42,32 @@ private slots:
 
     void on_m_push_button_save_clicked();
 
+    /**
+     * @brief update_timer slot update timer
+     */
+    inline void update_timer();
+
 private:
 
-    Ui::UiMindfulness *ui{nullptr};     /* GUI */
+    std::shared_ptr<Ui::UiMindfulness> ui;     /* GUI */
 
     /* graphics view */
-    GraphicsView* m_view{nullptr};      /* graphics view square */
-    QGraphicsScene* m_scren{nullptr};   /* scene view in graphics view */
+    std::shared_ptr<GraphicsView> m_view;      /* graphics view square */
+    std::shared_ptr<QGraphicsScene> m_scren;   /* scene view in graphics view */
 
-    libif::SaveDataUser m_save_data;    /* save data test user */
-    QColor m_color_save;                /* color now view square */
+    /* save data test */
+    libif::SaveDataUser m_save_data;            /* save data test user */
 
-    QTime m_time_test;                  /* */
-    int32_t m_test_ms{0};               /* */
+    /* measuring test */
+    QTime m_time_test;                          /* timer all test */
+    int32_t m_test_ms{0};                       /* save time test to ms */
+    QColor m_color_save;                        /* color now view square */
 
-    QTime m_one_test;                   /* time test */
+    QTime m_one_test;                           /* time test */
 
-    QTimer* m_timer_test;
-
-    int32_t m_max_test_sec{0};
-
+    /* timer test */
+    std::shared_ptr<QTimer> m_timer_test;       /* timer start -> run test */
+    int32_t m_max_test_sec{0};                  /* set second test */
 
 private:
     /**
@@ -64,17 +76,17 @@ private:
     void setup_registation();
 
     /**
-     * @brief setup_time init time test
+     * @brief setup_time init time test view tab
      */
     void setup_time();
 
     /**
-     * @brief setup_test
+     * @brief setup_test init test data view tab
      */
     void setup_test();
 
     /**
-     * @brief setup_result
+     * @brief setup_result init test result view tab
      */
     void setup_result();
 
@@ -85,17 +97,17 @@ private:
     void err_message(const QString& err_str) const;
 
     /**
-     * @brief set_new_square
+     * @brief set_new_square set new square to view window
      */
     void set_new_square();
 
     /**
-     * @brief start_test
+     * @brief start_test init all data to start test
      */
     void start_test();
 
     /**
-     * @brief end_test
+     * @brief end_test clear all data to start test
      */
     void end_test();
 
@@ -106,16 +118,24 @@ private:
     void update_lable(const int32_t number);
 
     /**
-     * @brief set_mute_unmute_tab
+     * @brief set_mute_unmute_tab set mute tab and unmute second tab
      * @param idx_mute
      * @param idx_unmute
      */
     void set_mute_unmute_tab(const int32_t idx_mute,const int32_t idx_unmute);
 
-    inline void update_timer();
-
+    /**
+     * @brief to_title  convert QString to title
+     * @param str       input QString
+     * @return
+     */
     inline QString to_title(const QString& str);
 
+    /**
+     * @brief second_to_time convert second to QTimer
+     * @param second input second
+     * @return QTimer
+     */
     inline QTime second_to_time(const int32_t second) const;
 };
 #endif // UIMINDFULNESS_HPP
