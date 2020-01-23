@@ -6,12 +6,11 @@
 #include <QColor>
 #include <QGraphicsItem>
 #include <QSizePolicy>
-<<<<<<< HEAD
-#include <QTableWidget>
-=======
 #include <QFileDialog>
 #include <QTimer>
->>>>>>> releace
+
+#include <QFileDialog>
+#include <QTimer>
 
 #include <QDebug>
 
@@ -19,10 +18,6 @@
 
 #include "graphics_view.hpp"
 
-<<<<<<< HEAD
-=======
-
->>>>>>> releace
 static constexpr int32_t C_IDX_REGI = 0;
 static constexpr int32_t C_IDX_TIME = 1;
 static constexpr int32_t C_IDX_INFO = 2;
@@ -32,7 +27,7 @@ static constexpr int32_t C_IDX_RESU = 4;
 static const QString ERR_TITLE = "Ошибка вводимых параметров";
 static const QString ERR_FNAME = "Не введена Фамилия";
 static const QString ERR_SNAME = "Не введено Имя";
-static const QString ERR_GROUP = "Не ведена группа";
+static const QString ERR_GROUP = "Не ведена Группа";
 
 static const QStringList C_LIST_WEAK = {
     "Понеденьник",
@@ -58,9 +53,6 @@ static const QStringList C_LIST_TT = {
 
 static const QStringList C_LIST_HDR = {
     "Наименование",
-<<<<<<< HEAD
-    "Конечные данные"
-=======
     "Данные тестируемого"
 >>>>>>> releace
 };
@@ -76,17 +68,11 @@ static const QStringList C_LIST_ROW = {
     "День Недели",
     "Время затраченное на тест ( ms )",
     "Количество правельных ответов",
-    "Количество не правельных ответов",
+    "Количество неправельных ответов",
     "Среднее время потраченное на Правельный ответ ( ms )"
 };
 
-<<<<<<< HEAD
-static const int32_t C_MAX_TEST = 10;
-=======
-
-static const int32_t C_MAX_TEST = 3;
->>>>>>> releace
-
+static const int32_t C_MAX_TEST = 100;
 static const QString C_MAX_TEST_STR = QString().sprintf("%03d", C_MAX_TEST);
 
 UiMindfulness::UiMindfulness(QWidget *parent)
@@ -119,20 +105,12 @@ void UiMindfulness::keyPressEvent(QKeyEvent *ev)
 
     const int32_t key = ev->key();
     if( key == Qt::Key_Space ){
-<<<<<<< HEAD
-        qDebug() << "Space -> " << key;
-=======
->>>>>>> releace
         if(m_color_save == QColor(Qt::red)){
             m_save_data.increment_correct_answer();
             m_save_data.summ_correct_time += m_one_test.restart();
         }
         set_new_square();
     }
-<<<<<<< HEAD
-    else if(key == Qt::Key_Enter or key == Qt::Key_Return){
-        qDebug() << "Enter -> " << key;
-=======
     if(key == Qt::Key_Enter or key == Qt::Key_Return){
 >>>>>>> releace
         if(m_color_save == QColor(Qt::blue)){
@@ -173,12 +151,6 @@ void UiMindfulness::on_push_button_reg_next_clicked()
     m_save_data.group       = ui->m_line_edit_group->text().toUpper();
 
     /* unmute time test and mute regisgtation */
-<<<<<<< HEAD
-    constexpr bool is_enable = true;
-
-    ui->m_main_tab_widget->setTabEnabled(C_IDX_TIME,is_enable);
-    ui->m_main_tab_widget->setTabEnabled(C_IDX_REGI,not is_enable);
-=======
     set_mute_unmute_tab(/* idx_mute = */C_IDX_REGI,/* idx_unmute = */C_IDX_TIME);
 >>>>>>> releace
 
@@ -235,9 +207,6 @@ void UiMindfulness::setup_time()
 
 void UiMindfulness::setup_test()
 {
-<<<<<<< HEAD
-    m_view = new libif::GraphicsView(ui->widget);
-=======
     m_view = new GraphicsView(ui->m_widget_test);
 >>>>>>> releace
 
@@ -245,9 +214,6 @@ void UiMindfulness::setup_test()
     layout->setMargin(0);
     layout->addWidget(m_view);
 
-<<<<<<< HEAD
-    ui->widget->setLayout(layout);
-=======
     ui->m_widget_test->setLayout(layout);
 >>>>>>> releace
 
@@ -257,8 +223,6 @@ void UiMindfulness::setup_test()
     m_view->setScene(m_scren);
     m_view->setViewRect(m_scren->sceneRect());
 
-<<<<<<< HEAD
-=======
     ui->m_label_test_info->setText("<b><font color='red'>Красный</font></b> - Spase | <b><font color='blue'>Синий</font></b> - Enter");
 
 >>>>>>> releace
@@ -321,8 +285,6 @@ void UiMindfulness::set_new_square()
         m_color_save = Qt::blue;
         ui->statusbar->showMessage("Голубой");
     }
-<<<<<<< HEAD
-=======
 
 >>>>>>> releace
     const int32_t line_width = 1;
@@ -330,8 +292,6 @@ void UiMindfulness::set_new_square()
     const QBrush c_brush = QBrush(m_color_save, Qt::SolidPattern);
 
     const int32_t n_items = m_view->items().size();
-<<<<<<< HEAD
-=======
 
 >>>>>>> releace
 
@@ -467,7 +427,6 @@ void UiMindfulness::on_push_button_time_next_clicked()
     m_save_data.time_day      = ui->m_combo_box_time_day->currentText();
     m_save_data.date          = ui->m_date_edit_time->date();
     m_save_data.day_weak      = ui->m_combo_box_weak_day->currentText();
-    m_save_data.idx_time_test = ui->m_combo_box_time_test->currentIndex();
 
     /* unmute information test and mute time test */
     set_mute_unmute_tab(/* idx_mute = */C_IDX_TIME,/* idx_unmute = */C_IDX_INFO);

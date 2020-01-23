@@ -16,8 +16,7 @@ public:
 
     QString time_day;           /* время суток */
     QDate date;                 /* дата */
-    QString day_weak;        /* день недели */
-    int32_t idx_time_test{0};   /* индекс времени теста */
+    QString day_weak;           /* день недели */
 
     int32_t count_test{0};
 
