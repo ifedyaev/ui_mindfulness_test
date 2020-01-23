@@ -1,4 +1,4 @@
-#include "ui_mindfulness.hpp"
+#include "src/ui_mindfulness.hpp"
 
 #include <QApplication>
 

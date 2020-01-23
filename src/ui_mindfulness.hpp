@@ -45,7 +45,7 @@ private slots:
     /**
      * @brief update_timer slot update timer
      */
-    inline void update_timer();
+    void update_timer();
 
 private:
 
@@ -115,7 +115,7 @@ private:
      * @brief update_lable
      * @param number
      */
-    void update_lable(const int32_t number);
+    inline void update_lable(const int32_t number);
 
     /**
      * @brief set_mute_unmute_tab set mute tab and unmute second tab
@@ -129,13 +129,13 @@ private:
      * @param str       input QString
      * @return
      */
-    inline QString to_title(const QString& str);
+    inline QString to_title(const QString& str) const noexcept;
 
     /**
      * @brief second_to_time convert second to QTimer
      * @param second input second
      * @return QTimer
      */
-    inline QTime second_to_time(const int32_t second) const;
+    inline QTime second_to_time(const int32_t second) const noexcept;
 };
 #endif // UIMINDFULNESS_HPP

@@ -17,15 +17,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    ui_mindfulness.cpp
+    src/ui_mindfulness.cpp
 
 HEADERS += \
-    save_data.hpp \
-    ui_mindfulness.hpp \
-    graphics_view.hpp
+    src/save_data.hpp \
+    src/ui_mindfulness.hpp \
+    ui/graphics_view.hpp
 
 FORMS += \
-    ui_mindfulness.ui
+    ui/ui_mindfulness.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

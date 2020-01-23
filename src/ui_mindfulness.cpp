@@ -7,10 +7,12 @@
 #include <QSizePolicy>
 #include <QFileDialog>
 #include <QTimer>
+#include <QKeyEvent>
+#include <QTextStream>
 
 #include <random> /* c++11 standart */
 
-#include "graphics_view.hpp"
+#include "../ui/graphics_view.hpp"
 
 static constexpr int32_t C_IDX_REGI = 0;
 static constexpr int32_t C_IDX_TIME = 1;
@@ -390,7 +392,7 @@ void UiMindfulness::update_timer()
     return;
 }
 
-QString UiMindfulness::to_title(const QString &str)
+QString UiMindfulness::to_title(const QString &str) const noexcept
 {
     QString str_out = str;
     if(not str_out.isEmpty()){
@@ -400,7 +402,7 @@ QString UiMindfulness::to_title(const QString &str)
     return str_out;
 }
 
-QTime UiMindfulness::second_to_time(const int32_t second) const
+QTime UiMindfulness::second_to_time(const int32_t second) const noexcept
 {
     int32_t cur_minute = second / 60;
     int32_t cur_second = second - cur_minute*60;
