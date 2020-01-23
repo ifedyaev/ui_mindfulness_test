@@ -461,6 +461,7 @@ void UiMindfulness::on_m_push_button_save_clicked()
     file_out.open(QIODevice::WriteOnly | QIODevice::Text);
 
     QTextStream s_out(&file_out);
+    s_out.setCodec(QTextCodec::codecForName("UTF-8"));
 
     const QTableWidget& tw_res = *ui->m_table_widget_result;
     int32_t i_r; /* loop row */
