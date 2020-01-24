@@ -7,16 +7,16 @@ namespace libif { class SaveDataUser; }
 
 class libif::SaveDataUser{
 public:
-    QString first_name;         /* Фамилия */
-    QString second_name;        /* Имя */
-    QString third_name;         /* Отчество */
+    QString surname;            /* Фамилия */
+    QString name;               /* Имя */
+    QString patronymic;         /* Отчество */
     int32_t year{0};            /* Лет */
 
     QString group;
 
-    QString time_day;           /* время суток */
+    QString time_of_day;        /* время суток */
     QDate date;                 /* дата */
-    QString day_weak;           /* день недели */
+    QString day_week;           /* день недели */
 
     int32_t count_test{0};
 

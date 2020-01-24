@@ -2,7 +2,7 @@
 #define UIMINDFULNESS_HPP
 /* coding utf-8
  * Программа для проведения теста на внимательность.
- * Автор:       Федяев Игорь
+ * Автор:       Федяев Игорь | Ефремов Алексей
  * Автор Идеи:  Мухутдинова Нейля
  * Дата окночания написания: 23.01.2020 г.
  */
@@ -61,8 +61,7 @@ private:
     /* measuring test */
     QTime m_time_test;                          /* timer all test */
     int32_t m_test_ms{0};                       /* save time test to ms */
-    QColor m_color_save;                        /* color now view square */
-    int32_t m_idx_save{0};
+    int32_t m_idx_save{0};                      /* save index map color */
 
     QTime m_one_test;                           /* time test */
 
@@ -100,7 +99,7 @@ private:
     /**
      * @brief set_new_square set new square to view window
      */
-    void set_new_square();
+    void updata_color_square();
 
     /**
      * @brief start_test init all data to start test
@@ -119,8 +118,8 @@ private:
     void set_data_time_test(const bool is_correct_answer);
 
     /**
-     * @brief update_lable
-     * @param number
+     * @brief update_lable_test_count update lable test count
+     * @param number    set count to lable
      */
     inline void update_lable_test_count(const int32_t number);
 
@@ -145,7 +144,11 @@ private:
      */
     inline QTime second_to_time(const int32_t second) const noexcept;
 
-
+    /**
+     * @brief str_to_utf8 convert string to utf-8
+     * @param str input string
+     * @return utf-8 string
+     */
     inline QString str_to_utf8(const QString& str) const noexcept;
 };
 #endif // UIMINDFULNESS_HPP
