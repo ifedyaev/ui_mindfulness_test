@@ -69,6 +69,11 @@ static const QStringList C_LIST_ROW = {
     "Среднее время потраченное на Правельный ответ ( ms )"
 };
 
+static const QMap< int32_t,QColor > C_MAP_COLOR = {
+    {0 , {Qt::red}  },
+    {1 , {Qt::blue} }
+};
+
 static const int32_t C_MAX_TEST = 100;
 static const QString C_MAX_TEST_STR = QString().sprintf("%03d", C_MAX_TEST);
 
@@ -90,28 +95,26 @@ UiMindfulness::UiMindfulness(QWidget *parent)
 
 void UiMindfulness::keyPressEvent(QKeyEvent *ev)
 {
-    if(ui->m_main_tab_widget->currentIndex() != C_IDX_TEST){
-        return;
-    }
+    const int32_t idx_tab_view = ui->m_main_tab_widget->currentIndex();
+    if(idx_tab_view != C_IDX_TEST){ return; }
 
+    bool is_update_color =  false;
     const int32_t key = ev->key();
     if( key == Qt::Key_Space ){
-        if(m_color_save == QColor(Qt::red)){
-            m_save_data.increment_correct_answer();
-            m_save_data.summ_correct_time += m_one_test.restart();
-        }
-        set_new_square();
+        is_update_color = true;
+        const bool is_correct_answer = (m_color_save == QColor(Qt::red));
+        set_data_time_test(is_correct_answer);
     }
-    if(key == Qt::Key_Enter or key == Qt::Key_Return){
+    else if( key == Qt::Key_Enter or key == Qt::Key_Return ){
+        is_update_color  = true;
+        const bool is_correct_answer = (m_color_save == QColor(Qt::blue));
+        set_data_time_test(is_correct_answer);
+    }
 
-        if(m_color_save == QColor(Qt::blue)){
-            m_save_data.increment_correct_answer();
-            m_save_data.summ_correct_time += m_one_test.restart();
-        }
+    if(is_update_color){
+        /* view new test */
         set_new_square();
-    }
-    else{
-        //        QDialog::keyPressEvent(ev);
+        m_one_test.restart();
     }
     return;
 }
@@ -143,7 +146,6 @@ void UiMindfulness::on_push_button_reg_next_clicked()
 
     /* unmute time test and mute regisgtation */
     set_mute_unmute_tab(/* idx_mute = */C_IDX_REGI,/* idx_unmute = */C_IDX_TIME);
-
 
     return;
 }
@@ -219,7 +221,7 @@ void UiMindfulness::setup_test()
 
 void UiMindfulness::setup_result()
 {
-    QTableWidget& tw_res = *ui->m_table_widget_result;
+    QTableWidget& tw_res = *(ui->m_table_widget_result);
     int32_t i;
 
     const int32_t n_col = static_cast<int32_t>(C_LIST_HDR.size());
@@ -245,7 +247,6 @@ void UiMindfulness::setup_result()
         tw_res.setItem(i,1,item);
     }
 
-    ui->m_time_edit_test->setEnabled(false);
     return;
 }
 
@@ -275,12 +276,11 @@ void UiMindfulness::set_new_square()
     }
 
 
-    const int32_t line_width = 1;
+    constexpr int32_t line_width = 1;
     const QPen c_pen = QPen(Qt::black, line_width, Qt::SolidLine, Qt::FlatCap);
     const QBrush c_brush = QBrush(m_color_save, Qt::SolidPattern);
 
     const int32_t n_items = m_view->items().size();
-
 
 
     if(n_items == 0){
@@ -300,7 +300,7 @@ void UiMindfulness::set_new_square()
         return;
     }
     m_save_data.increment_test();
-    update_lable(m_save_data.count_test);
+    update_lable_test_count(m_save_data.count_test);
 
     return;
 }
@@ -363,7 +363,16 @@ void UiMindfulness::end_test()
     return;
 }
 
-void UiMindfulness::update_lable(const int32_t number)
+void UiMindfulness::set_data_time_test(const bool is_correct_answer)
+{
+    if(is_correct_answer){
+        m_save_data.increment_correct_answer();
+        m_save_data.summ_correct_time += m_one_test.restart();
+    }
+    return;
+}
+
+void UiMindfulness::update_lable_test_count(const int32_t number)
 {
     QString cur_text;
     cur_text.sprintf("%03d", number);
@@ -457,22 +466,26 @@ void UiMindfulness::on_m_push_button_save_clicked()
                                                            );
     if(file_name == ""){ return; }
 
+    /* file out */
     QFile file_out(file_name);
-    file_out.open(QIODevice::WriteOnly | QIODevice::Text);
+    const bool is_open = file_out.open(QIODevice::WriteOnly | QIODevice::Text);
+    if( not is_open ){ return; }
 
+    /* stream file */
     QTextStream s_out(&file_out);
     s_out.setCodec(QTextCodec::codecForName("UTF-8"));
-
-    const QTableWidget& tw_res = *ui->m_table_widget_result;
-    int32_t i_r; /* loop row */
-
-    const int32_t n_row = static_cast<int32_t>(tw_res.rowCount());
 
     const QString comment_utf8 = str_to_utf8("/* -*- coding: utf-8 -*- */");
     const QString end = str_to_utf8("\n");
     const QString sep = str_to_utf8(" : ");
 
+    /* loop data */
+    int32_t i_r; /* loop row */
+    const int32_t n_row = static_cast<int32_t>(tw_res.rowCount());
+    const QTableWidget& tw_res = *(ui->m_table_widget_result);
+
     s_out << comment_utf8 << end;
+    /* loop put text table -> to file */
     for(i_r = 0; i_r < n_row; ++i_r){
         const QString lhs_str = str_to_utf8(tw_res.item(i_r,0)->text());
         const QString rhs_str = str_to_utf8(tw_res.item(i_r,1)->text());

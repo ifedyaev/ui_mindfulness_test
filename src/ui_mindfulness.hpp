@@ -62,6 +62,7 @@ private:
     QTime m_time_test;                          /* timer all test */
     int32_t m_test_ms{0};                       /* save time test to ms */
     QColor m_color_save;                        /* color now view square */
+    int32_t m_idx_save{0};
 
     QTime m_one_test;                           /* time test */
 
@@ -112,10 +113,16 @@ private:
     void end_test();
 
     /**
+     * @brief set_data_time_test set data time test
+     * @param is_correct_answer - true or false
+     */
+    void set_data_time_test(const bool is_correct_answer);
+
+    /**
      * @brief update_lable
      * @param number
      */
-    inline void update_lable(const int32_t number);
+    inline void update_lable_test_count(const int32_t number);
 
     /**
      * @brief set_mute_unmute_tab set mute tab and unmute second tab
@@ -139,6 +146,6 @@ private:
     inline QTime second_to_time(const int32_t second) const noexcept;
 
 
-    inline QString str_to_utf8(const QString& str)const noexcept;
+    inline QString str_to_utf8(const QString& str) const noexcept;
 };
 #endif // UIMINDFULNESS_HPP

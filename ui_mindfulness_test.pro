@@ -15,6 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+DESTDIR = bin
+
 SOURCES += \
     main.cpp \
     src/ui_mindfulness.cpp
@@ -31,3 +33,23 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    README.md
+
+# copy plugins/platforms
+unix {
+    # set path
+    INSTALL_PATH = $$DESTDIR
+    PATH_OUT_LIB = lib
+    # init out dirs
+    QMAKE_RPATHDIR += $$PATH_OUT_LIB
+    DIRS_LIBS_PLATFORM = plugins/platforms
+    MKDIR_PATH = $$INSTALL_PATH/$$PATH_OUT_LIB
+    # create dirs
+    create_copy.commands += $${QMAKE_MKDIR} $$shell_path($$MKDIR_PATH);
+    # copy
+    create_copy.commands += $${QMAKE_COPY_DIR} $$shell_path($$[QT_INSTALL_CONFIGURATION]/$$DIRS_LIBS_PLATFORM) $$INSTALL_PATH
+
+    QMAKE_EXTRA_TARGETS += create_copy
+}

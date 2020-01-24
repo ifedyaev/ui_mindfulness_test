@@ -1,1 +1,5 @@
 ui_mindfulness_test.pro.*
+bin/*
+build.sh
+.qmake.stash
+Makefile
