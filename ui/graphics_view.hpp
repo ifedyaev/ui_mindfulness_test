@@ -1,11 +1,10 @@
-#ifndef GRAPHICS_VIEW_HPP
+﻿#ifndef GRAPHICS_VIEW_HPP
 #define GRAPHICS_VIEW_HPP
-
+/*  -*- coding: utf-8 -*-  */
 #include <QGraphicsView>
 #include <stdint.h>
 
 class GraphicsView : public QGraphicsView
-
 {
 public:
     GraphicsView( QWidget* parent )

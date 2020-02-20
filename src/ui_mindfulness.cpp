@@ -1,3 +1,4 @@
+﻿/*  -*- coding: utf-8 -*-  */
 #include "ui_mindfulness.hpp"
 #include "ui_ui_mindfulness.h"
 
@@ -21,59 +22,62 @@ static constexpr int32_t C_IDX_INFO = 2;
 static constexpr int32_t C_IDX_TEST = 3;
 static constexpr int32_t C_IDX_RESU = 4;
 
-static const QString ERR_TITLE = "Ошибка вводимых параметров";
-static const QString ERR_FNAME = "Не введена Фамилия";
-static const QString ERR_SNAME = "Не введено Имя";
-static const QString ERR_GROUP = "Не ведена Группа";
+static const QString ERR_TITLE = QString::fromUtf8("Ошибка вводимых параметров");
+static const QString ERR_FNAME = QString::fromUtf8("Не введена Фамилия");
+static const QString ERR_SNAME = QString::fromUtf8("Не введено Имя");
+static const QString ERR_GROUP = QString::fromUtf8("Не ведена Группа");
 
 static const QStringList C_LIST_WEAK = {
-    "Понеденьник",
-    "Вторник",
-    "Среда",
-    "Четверг",
-    "Пятница",
-    "Суббота",
-    "Воскресенье"
+    QString::fromUtf8("Понеденьник"),
+    QString::fromUtf8("Вторник"),
+    QString::fromUtf8("Среда"),
+    QString::fromUtf8("Четверг"),
+    QString::fromUtf8("Пятница"),
+    QString::fromUtf8("Суббота"),
+    QString::fromUtf8("Воскресенье")
 };
 
 static const QStringList C_LIST_TD = {
-    "Утро",
-    "День",
-    "Вечер"
+    QString::fromUtf8("Утро"),
+    QString::fromUtf8("День"),
+    QString::fromUtf8("Вечер")
 };
 
 static const QStringList C_LIST_TT = {
-    "1 мин.",
-    "2 мин.",
-    "3 мин."
+    QString::fromUtf8("1 мин."),
+    QString::fromUtf8("2 мин."),
+    QString::fromUtf8("3 мин.")
 };
 
 static const QStringList C_LIST_HDR = {
-    "Наименование",
-    "Данные тестируемого"
+    QString::fromUtf8("Наименование"),
+    QString::fromUtf8("Данные тестируемого")
 };
 
 static const QStringList C_LIST_ROW = {
-    "Фамилия",
-    "Имя",
-    "Отчество",
-    "Возраст",
-    "Группа",
-    "Время Суток",
-    "Дата",
-    "День Недели",
-    "Время затраченное на тест ( ms )",
-    "Количество правельных ответов",
-    "Количество неправельных ответов",
-    "Среднее время потраченное на Правельный ответ ( ms )"
+    QString::fromUtf8("Фамилия"),
+    QString::fromUtf8("Имя"),
+    QString::fromUtf8("Отчество"),
+    QString::fromUtf8("Возраст"),
+    QString::fromUtf8("Группа"),
+    QString::fromUtf8("Время Суток"),
+    QString::fromUtf8("Дата"),
+    QString::fromUtf8("День Недели"),
+    QString::fromUtf8("Время затраченное на тест ( ms )"),
+    QString::fromUtf8("Количество правельных ответов"),
+    QString::fromUtf8("Количество неправельных ответов"),
+    QString::fromUtf8("Среднее время потраченное на Правельный ответ ( ms )")
 };
+
+static const QString C_STR_RED  = QString::fromUtf8("Красный");
+static const QString C_STR_BLUE = QString::fromUtf8("Синий");
 
 static const QMap< int32_t,QColor > C_MAP_COLOR = {
     {0 , {Qt::red}  },
     {1 , {Qt::blue} }
 };
 
-static const int32_t C_MAX_TEST = 3;
+static constexpr int32_t C_MAX_TEST = 100;
 static const QString C_MAX_TEST_STR = QString().sprintf("%03d", C_MAX_TEST);
 
 UiMindfulness::UiMindfulness(QWidget *parent)
@@ -213,7 +217,8 @@ void UiMindfulness::setup_test()
     m_view->setScene(m_scren.get());
     m_view->setViewRect(m_scren->sceneRect());
 
-    ui->m_label_test_info->setText("<b><font color='red'>Красный</font></b> - Spase | <b><font color='blue'>Синий</font></b> - Enter");
+    const QString str_info = QString("<b><font color='red'>%1</font></b> - Spase | <b><font color='blue'>%2</font></b> - Enter").arg(C_STR_RED,C_STR_BLUE);
+    ui->m_label_test_info->setText(str_info);
 
     return;
 }
@@ -266,8 +271,8 @@ void UiMindfulness::updata_color_square()
     m_idx_save = dist(e2);
 
     /* set status bar text view color */
-    if(m_idx_save == 0){ ui->statusbar->showMessage("Красный"); }
-    if(m_idx_save == 1){ ui->statusbar->showMessage("Голубой"); }
+    if(m_idx_save == 0){ ui->statusbar->showMessage(C_STR_RED); }
+    if(m_idx_save == 1){ ui->statusbar->showMessage(C_STR_BLUE); }
 
     /* set color square */
     constexpr int32_t line_width = 1;

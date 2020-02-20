@@ -1,5 +1,6 @@
-#ifndef SAVE_DATA_HPP
+﻿#ifndef SAVE_DATA_HPP
 #define SAVE_DATA_HPP
+/*  -*- coding: utf-8 -*-  */
 #include <QString>
 #include <QDate>
 
